@@ -2,7 +2,7 @@
 {
   config.fonts = {
     packages = with pkgs; [
-      (nerdfonts.override { fonts = [ config.sumAstroNvim.nerdfont ]; })
+      (nerdfonts.override { fonts = [ config.astroNvim.nerdfont ]; })
       font-awesome
     ];
   };

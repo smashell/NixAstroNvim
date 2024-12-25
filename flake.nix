@@ -1,5 +1,5 @@
 {
-  description = "SumAstroNvim Nix Implementation";
+  description = "AstroNvim Nix Implementation";
   inputs = {
     nixpkgs = {
       url = "github:nixos/nixpkgs/nixos-unstable";
@@ -16,11 +16,11 @@
   outputs = { self, nixpkgs, darwin, home-manager, ... }:
     {
       nixosModules = rec {
-        astroNvim = import ./sum-astro-nvim/nixos.nix;
+        astroNvim = import ./astro-nvim/nixos.nix;
         defualt = astroNvim;
       };
       darwinModules = rec {
-        astroNvim = import ./sum-astro-nvim/macos.nix;
+        astroNvim = import ./astro-nvim/macos.nix;
         defualt = astroNvim;
       };
     };

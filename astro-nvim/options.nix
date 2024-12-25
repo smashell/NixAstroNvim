@@ -1,9 +1,9 @@
 { lib, ... }:
 {
-  options.sumAstroNvim = with lib; {
+  options.astroNvim = with lib; {
     username = mkOption {
       type = types.str;
-      description = "The user for whom SumAstroNvim will be installed";
+      description = "The user for whom AstroNvim will be installed";
     };
     nerdfont = mkOption {
       type = types.str;

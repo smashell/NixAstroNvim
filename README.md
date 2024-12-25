@@ -1,4 +1,4 @@
-# Sum Rock's AstroNvim Implementation
+# My Dotvim
 
 This is an implementation of the [AstroNvim](https://astronvim.com/)
 configuration/plugin distribution for Neovim using Nix flakes. The flake contains both a
@@ -54,3 +54,6 @@ A very minimal installation in a typical nix flake would look as follows:
   # Everything else required to configure your machine...
 }
 ```
+
+Thanks to Sum Rock (https://github.com/sum-rock/SumAstroNvim) for the original
+implementation.
