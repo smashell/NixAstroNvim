@@ -14,6 +14,7 @@ return {
       "c_sharp",
       "rust",
       "typescript",
+      "nu",
       -- add more arguments for adding more treesitter parsers
     })
   end,
