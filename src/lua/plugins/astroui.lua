@@ -7,7 +7,8 @@ return {
   ---@type AstroUIOpts
   opts = {
     -- change colorscheme
-    colorscheme = "nightfox",
+    -- colorscheme = "nightfox",
+    colorscheme = "terafox",
     -- colorscheme = "eldritch",
     -- colorscheme = "astrodark",
     -- AstroUI allows you to easily modify highlight groups easily for any and all colorschemes
