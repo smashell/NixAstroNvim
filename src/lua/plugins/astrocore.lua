@@ -83,8 +83,8 @@ return {
         -- Debugging
         ["<Leader><Leader>"] = { function() require("dap").step_over() end, desc = "Step Over (F10)" },
 
-        -- ["<C-q>"] = { function() end, desc = "Unmapped" },
-        -- ["<Leader>q"] = { function() end, desc = "Unmapped" },
+        -- ["<C-q>"] = { false, desc = "Unmapped" },
+        -- ["<Leader>q"] = { false, desc = "Unmapped" },
         ["]Q"] = { "<cmd>:cclose<cr>", desc = "Quickfix close" },
         ["]qq"] = { "<cmd>:cclose<cr>", desc = "Quickfix close" },
         ["]qn"] = { "<cmd>:cnext<cr>", desc = "Quickfix next" },
