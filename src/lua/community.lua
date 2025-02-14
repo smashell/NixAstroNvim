@@ -18,6 +18,7 @@ return {
   { import = "astrocommunity.pack.nix" },
   { import = "astrocommunity.pack.markdown" },
   { import = "astrocommunity.pack.yaml" },
+  { import = "astrocommunity.pack.cs" },
   -- { import = "astrocommunity.pack.java" },
   -- { import = "astrocommunity.pack.sql" },
   -- { import = "astrocommunity.pack.go" },
@@ -41,4 +42,6 @@ return {
   { import = "astrocommunity.utility.mason-tool-installer-nvim" },
   { import = "astrocommunity.bars-and-lines.scope-nvim" },
   -- { import = "astrocommunity.recipes.astrolsp-no-insert-inlay-hints" },
+
+  -- { import = "astrocommunity.git.mini-diff" },
 }
