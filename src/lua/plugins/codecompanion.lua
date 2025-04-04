@@ -7,6 +7,11 @@ return {
       "nvim-treesitter/nvim-treesitter",
     },
     config = true,
+    display = {
+      diff = {
+        provider = "mini_diff",
+      },
+    },
   },
   {
     "AstroNvim/astrocore",

@@ -1,4 +1,4 @@
-{ pkgs, system, config, lib, home-manger, ... }:
+{ pkgs, system, config, lib, home-manager, ... }:
 let
   refresh = pkgs.writeScriptBin "nvim-refresh" ''
     rm -rf ~/.config/nvim/lazy-lock.json
