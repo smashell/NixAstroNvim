@@ -5,7 +5,6 @@
 ---@type LazySpec
 return {
   "AstroNvim/astrocommunity",
-
   { import = "astrocommunity.pack.dart" },
   { import = "astrocommunity.pack.docker" },
   { import = "astrocommunity.pack.lua" },
@@ -19,29 +18,22 @@ return {
   { import = "astrocommunity.pack.markdown" },
   { import = "astrocommunity.pack.yaml" },
   { import = "astrocommunity.pack.cs" },
-  -- { import = "astrocommunity.pack.java" },
-  -- { import = "astrocommunity.pack.sql" },
-  -- { import = "astrocommunity.pack.go" },
-  -- { import = "astrocommunity.pack.clojure" },
-  -- { import = "astrocommunity.pack.elm" },
+
+  { import = "astrocommunity.recipes.ai" },
+  { import = "astrocommunity.recipes.heirline-vscode-winbar" },
+  { import = "astrocommunity.recipes.picker-lsp-mappings" },
+  { import = "astrocommunity.completion.copilot-lua-cmp" },
+
+  { import = "astrocommunity.git.diffview-nvim" },
+  { import = "astrocommunity.editing-support.vim-visual-multi" },
+  -- { import = "astrocommunity.editing-support.multiple-cursors-nvim" },
+  { import = "astrocommunity.motion.hop-nvim" },
+  { import = "astrocommunity.motion.nvim-surround" },
+  { import = "astrocommunity.test.neotest" },
 
   { import = "astrocommunity.colorscheme.nightfox-nvim" },
   { import = "astrocommunity.colorscheme.neofusion-nvim" },
   { import = "astrocommunity.colorscheme.eldritch-nvim" },
   { import = "astrocommunity.colorscheme.tokyonight-nvim" },
   { import = "astrocommunity.colorscheme.kanagawa-nvim" },
-  { import = "astrocommunity.completion.copilot-lua-cmp" },
-  { import = "astrocommunity.editing-support.vim-visual-multi" },
-
-  { import = "plugins.copilotchat-nvim" },
-  { import = "astrocommunity.editing-support.copilotchat-nvim" },
-
-  { import = "astrocommunity.motion.hop-nvim" },
-  { import = "astrocommunity.motion.nvim-surround" },
-  -- { import = "astrocommunity.quickfix.quicker-nvim" },
-  { import = "astrocommunity.utility.mason-tool-installer-nvim" },
-  { import = "astrocommunity.bars-and-lines.scope-nvim" },
-  -- { import = "astrocommunity.recipes.astrolsp-no-insert-inlay-hints" },
-
-  -- { import = "astrocommunity.git.mini-diff" },
 }

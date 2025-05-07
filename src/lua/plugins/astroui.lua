@@ -1,5 +1,7 @@
 -- AstroUI provides the basis for configuring the AstroNvim User Interface
 -- Configuration documentation can be found with `:h astroui`
+-- NOTE: We highly recommend setting up the Lua Language Server (`:LspInstall lua_ls`)
+--       as this provides autocomplete and documentation while editing
 
 ---@type LazySpec
 return {
@@ -7,16 +9,15 @@ return {
   ---@type AstroUIOpts
   opts = {
     -- change colorscheme
-    -- colorscheme = "nightfox",
     colorscheme = "terafox",
-    -- colorscheme = "eldritch",
-    -- colorscheme = "astrodark",
-    -- AstroUI allows you to easily modify highlight groups easily for any and all colorschemes
     highlights = {
       init = { -- this table overrides highlights in all themes
-        -- Normal = { bg = "#000000" },
+        -- MultipleCursorsCursor = { bg = "#fda47f", fg = "#1d3337" },
+        -- MultipleCursorsVisual = { bg = "#ff8349", fg = "#1d3337" },
+        -- MultipleCursorsLockedCursor = { bg = "#fda47f", fg = "#1d3337" },
+        -- MultipleCursorsLockedVisual = { bg = "#fda47f", fg = "#1d3337" },
       },
-      astrotheme = { -- a table of overrides/changes when applying the astrotheme theme
+      astrodark = { -- a table of overrides/changes when applying the astrotheme theme
         -- Normal = { bg = "#000000" },
       },
     },
@@ -36,3 +37,20 @@ return {
     },
   },
 }
+
+-- base00: "#152528"
+-- base01: "#1d3337"
+-- base02: "#254147"
+-- base03: "#4e5157"
+-- base04: "#587b7b"
+-- base05: "#e6eaea"
+-- base06: "#cbd9d8"
+-- base07: "#eeeeee"
+-- base08: "#e85c51"
+-- base09: "#ff8349"
+-- base0A: "#fda47f"
+-- base0B: "#7aa4a1"
+-- base0C: "#a1cdd8"
+-- base0D: "#5a93aa"
+-- base0E: "#ad5c7c"
+-- base0F: "#cb7985"

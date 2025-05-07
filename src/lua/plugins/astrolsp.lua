@@ -6,23 +6,113 @@
 ---@type LazySpec
 return {
   "AstroNvim/astrolsp",
-  ---@type AstroLSPOpts
-  opts = function(plugin, opts)
-    opts.servers = opts.servers or {}
-    vim.list_extend(opts.servers, {
-      "clangd", -- Use local clangd 'cause Nix
-    })
-
+  -- opts = {
+  --   -- Configuration table of features provided by AstroLSP
+  --   features = {
+  --     codelens = true, -- enable/disable codelens refresh on start
+  --     inlay_hints = false, -- enable/disable inlay hints on start
+  --     semantic_tokens = true, -- enable/disable semantic token highlighting
+  --   },
+  --   -- customize lsp formatting options
+  --   formatting = {
+  --     -- control auto formatting on save
+  --     format_on_save = {
+  --       enabled = true, -- enable or disable format on save globally
+  --       allow_filetypes = { -- enable format on save for specified filetypes only
+  --         -- "go",
+  --       },
+  --       ignore_filetypes = { -- disable format on save for specified filetypes
+  --         -- "python",
+  --         "json"
+  --       },
+  --     },
+  --     disabled = { -- disable formatting capabilities for the listed language servers
+  --       -- NOTE: We use prettier hopefully everywhere, tsserver formats differently by default
+  --       --   We could use manual filters below to add formatting back for some specific projects
+  --       "tsserver",
+  --       "vtsls",
+  --       "typescript-tools",
+  --     },
+  --     timeout_ms = 1000, -- default format timeout
+  --     -- filter = function(client) -- fully override the default formatting function
+  --     --   return true
+  --     -- end
+  --   },
+  --   -- enable servers that you already have installed without mason
+  --   servers = {
+  --     -- "pyright"
+  --   },
+  --   -- customize language server configuration options passed to `lspconfig`
+  --   ---@diagnostic disable: missing-fields
+  --   config = {
+  --     -- clangd = { capabilities = { offsetEncoding = "utf-8" } },
+  --   },
+  --   -- customize how language servers are attached
+  --   handlers = {
+  --     -- a function without a key is simply the default handler, functions take two parameters, the server name and the configured options table for that server
+  --     -- function(server, opts) require("lspconfig")[server].setup(opts) end
+  --
+  --     -- the key is the server that is being setup with `lspconfig`
+  --     -- rust_analyzer = false, -- setting a handler to false will disable the set up of that language server
+  --     -- pyright = function(_, opts) require("lspconfig").pyright.setup(opts) end -- or a custom handler function can be passed
+  --   },
+  --   -- Configure buffer local auto commands to add when attaching a language server
+  --   autocmds = {
+  --     -- first key is the `augroup` to add the auto commands to (:h augroup)
+  --     lsp_codelens_refresh = {
+  --       -- Optional condition to create/delete auto command group
+  --       -- can either be a string of a client capability or a function of `fun(client, bufnr): boolean`
+  --       -- condition will be resolved for each client on each execution and if it ever fails for all clients,
+  --       -- the auto commands will be deleted for that buffer
+  --       cond = "textDocument/codeLens",
+  --       -- cond = function(client, bufnr) return client.name == "lua_ls" end,
+  --       -- list of auto commands to set
+  --       {
+  --         -- events to trigger
+  --         event = { "InsertLeave", "BufEnter" },
+  --         -- the rest of the autocmd options (:h nvim_create_autocmd)
+  --         desc = "Refresh codelens (buffer)",
+  --         callback = function(args)
+  --           if require("astrolsp").config.features.codelens then vim.lsp.codelens.refresh { bufnr = args.buf } end
+  --         end,
+  --       },
+  --     },
+  --   },
+  --   -- mappings to be set up on attaching of a language server
+  --   mappings = {
+  --     n = {
+  --       -- a `cond` key can provided as the string of a server capability to be required to attach, or a function with `client` and `bufnr` parameters from the `on_attach` that returns a boolean
+  --       gD = {
+  --         function() vim.lsp.buf.declaration() end,
+  --         desc = "Declaration of current symbol",
+  --         cond = "textDocument/declaration",
+  --       },
+  --       ["<Leader>uY"] = {
+  --         function() require("astrolsp.toggles").buffer_semantic_tokens() end,
+  --         desc = "Toggle LSP semantic highlight (buffer)",
+  --         cond = function(client)
+  --           return client.supports_method "textDocument/semanticTokens/full" and vim.lsp.semantic_tokens ~= nil
+  --         end,
+  --       },
+  --     },
+  --   },
+  --   -- A custom `on_attach` function to be run after the default `on_attach` function
+  --   -- takes two parameters `client` and `bufnr`  (`:h lspconfig-setup`)
+  --   on_attach = function(client, bufnr)
+  --     -- this would disable semanticTokensProvider for all clients
+  --     -- client.server_capabilities.semanticTokensProvider = nil
+  --   end,
+  -- },
+  ---@param opts AstroLSPOpts
+  opts = function(_, opts)
     -- Configuration table of features provided by AstroLSP
-    ---@type AstroLSPFeatureOpts
-    opts.features = require("astrocore").extend_tbl(opts.features or {}, {
-      autoformat = true, -- enable or disable auto formatting on start
+    opts.features = {
       codelens = true, -- enable/disable codelens refresh on start
-      -- inlay_hints = true, -- enable/disable inlay hints on start
+      inlay_hints = false, -- enable/disable inlay hints on start
       semantic_tokens = true, -- enable/disable semantic token highlighting
-    })
+    }
     -- customize lsp formatting options
-    opts.formatting = require("astrocore").extend_tbl(opts.formatting or {}, {
+    opts.formatting = {
       -- control auto formatting on save
       format_on_save = {
         enabled = true, -- enable or disable format on save globally
@@ -45,97 +135,65 @@ return {
       -- filter = function(client) -- fully override the default formatting function
       --   return true
       -- end
-    })
+    }
     -- enable servers that you already have installed without mason
-    --- @type lsp.ClientCapabilities
-    opts.config = require("astrocore").extend_tbl(opts.config or {}, {
-      -- FIXME: https://github.com/folke/neoconf.nvim/issues/51
-      -- sonarlint = {
-      --   cmd = {
-      --     "sonarlint-language-server",
-      --     -- Ensure that sonarlint-language-server uses stdio channel
-      --     "-stdio",
-      --     "-analyzers",
-      --     -- paths to the analyzers you need, using those for python and java in this example
-      --     -- vim.fn.expand "$MASON/share/sonarlint-analyzers/sonarpython.jar",
-      --     -- vim.fn.expand "$MASON/share/sonarlint-analyzers/sonarcfamily.jar",
-      --     -- vim.fn.expand "$MASON/share/sonarlint-analyzers/sonarjava.jar",
-      --     vim.fn.expand "$MASON/share/sonarlint-analyzers/sonarjs.jar",
-      --   },
-      -- },
-      -- filetypes = {
-      --   -- Tested and working
-      --   -- "python",
-      --   -- "cpp",
-      --   -- "java",
-      --   "typescript",
-      --   "typescriptreact",
-      -- },
-      -- root_dir = require("lspconfig.util").root_pattern "package.json",
-    })
+    opts.servers = {
+      -- "pyright"
+    }
+    -- customize language server configuration options passed to `lspconfig`
+    ---@diagnostic disable: missing-fields
+    opts.config = {
+      -- clangd = { capabilities = { offsetEncoding = "utf-8" } },
+    }
     -- customize how language servers are attached
-    opts.handlers = require("astrocore").extend_tbl(opts.handlers or {}, {
+    opts.handlers = {
       -- a function without a key is simply the default handler, functions take two parameters, the server name and the configured options table for that server
       -- function(server, opts) require("lspconfig")[server].setup(opts) end
 
       -- the key is the server that is being setup with `lspconfig`
       -- rust_analyzer = false, -- setting a handler to false will disable the set up of that language server
       -- pyright = function(_, opts) require("lspconfig").pyright.setup(opts) end -- or a custom handler function can be passed
-    })
+    }
     -- Configure buffer local auto commands to add when attaching a language server
-    opts.autocmds = require("astrocore").extend_tbl(opts.autocmds or {}, {
+    opts.autocmds = {
       -- first key is the `augroup` to add the auto commands to (:h augroup)
-      lsp_document_highlight = {
+      lsp_codelens_refresh = {
         -- Optional condition to create/delete auto command group
         -- can either be a string of a client capability or a function of `fun(client, bufnr): boolean`
         -- condition will be resolved for each client on each execution and if it ever fails for all clients,
         -- the auto commands will be deleted for that buffer
-        cond = "textDocument/documentHighlight",
+        cond = "textDocument/codeLens",
         -- cond = function(client, bufnr) return client.name == "lua_ls" end,
         -- list of auto commands to set
         {
           -- events to trigger
-          event = { "CursorHold", "CursorHoldI" },
+          event = { "InsertLeave", "BufEnter" },
           -- the rest of the autocmd options (:h nvim_create_autocmd)
-          desc = "Document Highlighting",
-          callback = function() vim.lsp.buf.document_highlight() end,
-        },
-        {
-          event = { "CursorMoved", "CursorMovedI", "BufLeave" },
-          desc = "Document Highlighting Clear",
-          callback = function() vim.lsp.buf.clear_references() end,
+          desc = "Refresh codelens (buffer)",
+          callback = function(args)
+            if require("astrolsp").config.features.codelens then vim.lsp.codelens.refresh { bufnr = args.buf } end
+          end,
         },
       },
-    })
+    }
     -- mappings to be set up on attaching of a language server
-    opts.mappings = require("astrocore").extend_tbl(opts.mappings or {}, {
-      n = {
-        gl = { function() vim.diagnostic.open_float() end, desc = "Hover diagnostics" },
-        ["<Leader>le"] = {
-          function() require("telescope.builtin").lsp_definitions() end,
-          desc = "Search definitions",
-        },
-        ["<Leader>lt"] = {
-          function() require("telescope.builtin").lsp_type_definitions() end,
-          desc = "Search type definitions",
-        },
-        ["<Leader>lW"] = {
-          function() require("telescope.builtin").lsp_dynamic_workspace_symbols() end,
-          desc = "Search dyn workspace symbols",
-        },
-        -- a `cond` key can provided as the string of a server capability to be required to attach, or a function with `client` and `bufnr` parameters from the `on_attach` that returns a boolean
-        -- gD = {
-        --   function() vim.lsp.buf.declaration() end,
-        --   desc = "Declaration of current symbol",
-        --   cond = "textDocument/declaration",
-        -- },
-        -- ["<Leader>uY"] = {
-        --   function() require("astrolsp.toggles").buffer_semantic_tokens() end,
-        --   desc = "Toggle LSP semantic highlight (buffer)",
-        --   cond = function(client) return client.server_capabilities.semanticTokensProvider and vim.lsp.semantic_tokens end,
-        -- },
-      },
-    })
+    -- opts.mappings = {
+    --   n = {
+    --     -- a `cond` key can provided as the string of a server capability to be required to attach, or a function with `client` and `bufnr` parameters from the `on_attach` that returns a boolean
+    --     -- gD = {
+    --     --   function() vim.lsp.buf.declaration() end,
+    --     --   desc = "Declaration of current symbol",
+    --     --   cond = "textDocument/declaration",
+    --     -- },
+    --     -- ["<Leader>uY"] = {
+    --     --   function() require("astrolsp.toggles").buffer_semantic_tokens() end,
+    --     --   desc = "Toggle LSP semantic highlight (buffer)",
+    --     --   cond = function(client)
+    --     --     return client.supports_method "textDocument/semanticTokens/full" and vim.lsp.semantic_tokens ~= nil
+    --     --   end,
+    --     -- },
+    --   },
+    -- }
     -- A custom `on_attach` function to be run after the default `on_attach` function
     -- takes two parameters `client` and `bufnr`  (`:h lspconfig-setup`)
     opts.on_attach = function(client, bufnr)

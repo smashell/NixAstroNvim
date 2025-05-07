@@ -10,10 +10,10 @@ return {
   opts = {
     -- Configure core features of AstroNvim
     features = {
-      large_buf = { size = 1024 * 500, lines = 10000 }, -- set global limits for large files for disabling features like treesitter
+      large_buf = { size = 1024 * 256, lines = 10000 }, -- set global limits for large files for disabling features like treesitter
       autopairs = true, -- enable autopairs at start
       cmp = true, -- enable completion at start
-      diagnostics_mode = 3, -- diagnostic mode on start (0 = off, 1 = no signs/virtual text, 2 = no virtual text, 3 = on)
+      diagnostics = { virtual_text = false, virtual_lines = true }, -- diagnostic settings on startup
       highlighturl = true, -- highlight URLs at start
       notifications = true, -- enable notifications at start
     },
@@ -22,20 +22,33 @@ return {
       virtual_text = true,
       underline = true,
     },
+    -- passed to `vim.filetype.add`
+    filetypes = {
+      -- see `:h vim.filetype.add` for usage
+      -- extension = {
+      --   foo = "fooscript",
+      -- },
+      -- filename = {
+      --   [".foorc"] = "fooscript",
+      -- },
+      -- pattern = {
+      --   [".*/etc/foo/.*"] = "fooscript",
+      -- },
+    },
     -- vim options can be configured here
     options = {
       opt = { -- vim.opt.<key>
         relativenumber = true, -- sets vim.opt.relativenumber
         number = true, -- sets vim.opt.number
         spell = false, -- sets vim.opt.spell
-        signcolumn = "auto", -- sets vim.opt.signcolumn to auto
+        signcolumn = "yes", -- sets vim.opt.signcolumn to yes
         wrap = true, -- sets vim.opt.wrap
+        showtabline = 1,
       },
       g = { -- vim.g.<key>
         -- configure global vim variables (vim.g)
         -- NOTE: `mapleader` and `maplocalleader` must be set in the AstroNvim opts or before `lazy.setup`
         -- This can be found in the `lua/lazy_setup.lua` file
-
         copilot_chat_prefix = "<Leader>V",
       },
     },
@@ -44,6 +57,21 @@ return {
     mappings = {
       -- first key is the mode
       n = {
+        -- second key is the lefthand side of the map
+
+        -- navigate buffer tabs
+        ["]b"] = { function() require("astrocore.buffer").nav(vim.v.count1) end, desc = "Next buffer" },
+        ["[b"] = { function() require("astrocore.buffer").nav(-vim.v.count1) end, desc = "Previous buffer" },
+
+        -- mappings seen under group name "Buffer"
+        ["<Leader>bd"] = {
+          function()
+            require("astroui.status.heirline").buffer_picker(
+              function(bufnr) require("astrocore.buffer").close(bufnr) end
+            )
+          end,
+          desc = "Close buffer from tabline",
+        },
 
         -- Git
         ["<Leader>gv"] = { "<cmd>DiffviewOpen<cr>", desc = "Show diffview of open changes" },
@@ -57,31 +85,14 @@ return {
         },
         ["<Leader>gl"] = { "<cmd>ToggleBlame<cr>", desc = "Git Blame" },
 
-        -- Telescope
-        -- NOTE: Some keybindings are in `astrolsp`
-        ["<Leader>fg"] = {
-          "<cmd>lua require'telescope.builtin'.grep_string{ search = vim.fn.input('Search for: ') }<cr>",
-          silent = true,
-          desc = "Grep for string in all files and filter results",
-        },
-        ["<Leader>le"] = {
-          function() require("telescope.builtin").lsp_definitions() end,
-          desc = "Search definitions",
-        },
-        ["<Leader>lt"] = {
-          function() require("telescope.builtin").lsp_type_definitions() end,
-          desc = "Search type definitions",
-        },
-        ["<Leader>lW"] = {
-          function() require("telescope.builtin").lsp_dynamic_workspace_symbols() end,
-          desc = "Search dyn workspace symbols",
-        },
-
         -- Movement
         ["<Leader>a"] = { "<cmd>lua require'hop'.hint_words()<cr>", desc = "Hop to word" },
 
         -- Debugging
         ["<Leader><Leader>"] = { function() require("dap").step_over() end, desc = "Step Over (F10)" },
+
+        -- visual
+        -- ["<C-n>"] = { "<Cmd>MultipleCursorsAddJumpNextMatch<CR>", desc = "Add cursor and jump to next match" },
 
         -- ["<C-q>"] = { false, desc = "Unmapped" },
         -- ["<Leader>q"] = { false, desc = "Unmapped" },
@@ -101,10 +112,13 @@ return {
         ["<Leader>7"] = { "<c-w>7w", desc = "Goto seventh win" },
         ["<Leader>8"] = { "<c-w>8w", desc = "Goto eighth win" },
         ["<Leader>9"] = { "<c-w>9w", desc = "Goto ninth win" },
-      },
-      t = {
+
+        -- tables with just a `desc` key will be registered with which-key if it's installed
+        -- this is useful for naming menus
+        -- ["<Leader>b"] = { desc = "Buffers" },
+
         -- setting a mapping to false will disable it
-        -- ["<esc>"] = false,
+        -- ["<C-S>"] = false,
       },
     },
   },
