@@ -19,10 +19,12 @@ return {
   { import = "astrocommunity.pack.yaml" },
   { import = "astrocommunity.pack.cs" },
 
+  -- AI stuff
   { import = "astrocommunity.recipes.ai" },
   { import = "astrocommunity.recipes.heirline-vscode-winbar" },
   { import = "astrocommunity.recipes.picker-lsp-mappings" },
   { import = "astrocommunity.completion.copilot-lua-cmp" },
+  { import = "astrocommunity.editing-support.copilotchat-nvim" },
 
   { import = "astrocommunity.git.diffview-nvim" },
   { import = "astrocommunity.editing-support.vim-visual-multi" },
