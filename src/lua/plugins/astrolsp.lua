@@ -196,9 +196,11 @@ return {
     -- }
     -- A custom `on_attach` function to be run after the default `on_attach` function
     -- takes two parameters `client` and `bufnr`  (`:h lspconfig-setup`)
-    opts.on_attach = function(client, bufnr)
+    -- opts.on_attach = function(client, bufnr)
       -- this would disable semanticTokensProvider for all clients
       -- client.server_capabilities.semanticTokensProvider = nil
-    end
+    -- end
+
+    return opts
   end,
 }
