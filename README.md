@@ -1,5 +1,3 @@
-# My Dotvim
-
 This is an implementation of the [AstroNvim](https://astronvim.com/)
 configuration/plugin distribution for Neovim using Nix flakes. The flake contains both a
 NixOS and NixDarwin module which allows for easy adaptation and installation. The flake
@@ -55,5 +53,5 @@ A very minimal installation in a typical nix flake would look as follows:
 }
 ```
 
-Thanks to Sum Rock (https://github.com/sum-rock/SumAstroNvim) for the original
+Thanks to [Sum Rock](https://github.com/sum-rock/SumAstroNvim) and [LinuCC](https://github.com/LinuCC/dotvim) for the original
 implementation.
