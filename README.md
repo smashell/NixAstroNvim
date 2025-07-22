@@ -52,6 +52,16 @@ A very minimal installation in a typical nix flake would look as follows:
   # Everything else required to configure your machine...
 }
 ```
-
+## configuration
+### plugins
+You can add a plugin in [src/lua/community.lua](https://github.com/smashell/NixAstroNvim/blob/main/src/lua/community.lua), for example [markdown-preview](https://github.com/AstroNvim/astrocommunity/tree/main/lua/astrocommunity/markdown-and-latex/markdown-preview-nvim):
+```lua
+return {
+  "AstroNvim/astrocommunity",
+ -- other config
+  { import = "astrocommunity.markdown-and-latex.markdown-preview-nvim" },
+ -- other config
+```
+## Thanks
 Thanks to [Sum Rock](https://github.com/sum-rock/SumAstroNvim) and [LinuCC](https://github.com/LinuCC/dotvim) for the original
 implementation.
